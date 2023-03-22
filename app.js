@@ -22,14 +22,12 @@ const openai = new OpenAIApi(configuration)
 app.post('/question', async (req, res) => {
   const { input } = req.body
   try {
-    const completion = await openai.createCompletion({
-      model: 'text-davinci-003',
-      prompt: input,
-      max_tokens: 2048,
-      temperature: 1
+    const completion = await openai.createChatCompletion({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: input }]
     })
     res.json({
-      message: completion.data.choices[0].text
+      message: completion.data.choices[0].message.content
     })
   } catch (error) {
     res.json({
